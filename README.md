@@ -2,7 +2,7 @@
 
 [![CircleCI build status](https://img.shields.io/cirrus/github/helpwithcovid/covid-volunteers?style=plastic)](https://circleci.com/gh/helpwithcovid/covid-volunteers)
 
-This repository stores the code for the https://helpwithcovid.com/ website.
+This repository stores the code for the https://fundcovid.org/ website.
 
 The stack is:
 
