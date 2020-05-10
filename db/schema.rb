@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_10_093753) do
+ActiveRecord::Schema.define(version: 2020_05_10_101109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 2020_05_10_093753) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_investors_on_email", unique: true
     t.index ["reset_password_token"], name: "index_investors_on_reset_password_token", unique: true
+  end
+
+  create_table "investors_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "investor_id", null: false
+    t.index ["investor_id"], name: "index_investors_projects_on_investor_id"
+    t.index ["project_id"], name: "index_investors_projects_on_project_id"
   end
 
   create_table "offers", force: :cascade do |t|
@@ -144,7 +151,9 @@ ActiveRecord::Schema.define(version: 2020_05_10_093753) do
     t.boolean "pair_with_projects", default: false
     t.boolean "deactivated", default: false, null: false
     t.boolean "investor"
+    t.bigint "project_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["project_id"], name: "index_users_on_project_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -165,4 +174,5 @@ ActiveRecord::Schema.define(version: 2020_05_10_093753) do
 
   add_foreign_key "projects", "users"
   add_foreign_key "showcases", "projects"
+  add_foreign_key "users", "projects"
 end
