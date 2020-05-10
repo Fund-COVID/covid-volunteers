@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :investors
   # Redirect www to non-www.
   if ENV['CANONICAL_HOST']
     constraints(host: Regexp.new("^(?!#{Regexp.escape(ENV['CANONICAL_HOST'])})")) do

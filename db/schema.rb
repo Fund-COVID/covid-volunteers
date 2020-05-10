@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_01_194019) do
+ActiveRecord::Schema.define(version: 2020_05_10_093753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,11 +36,16 @@ ActiveRecord::Schema.define(version: 2020_05_01_194019) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "likes", force: :cascade do |t|
-    t.integer "project_id"
-    t.integer "user_id"
+  create_table "investors", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_investors_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_investors_on_reset_password_token", unique: true
   end
 
   create_table "offers", force: :cascade do |t|
@@ -57,9 +62,8 @@ ActiveRecord::Schema.define(version: 2020_05_01_194019) do
   create_table "projects", force: :cascade do |t|
     t.integer "user_id"
     t.string "name", default: "", null: false
-    t.string "participants", default: "", null: false
     t.string "description", default: "", null: false
-    t.string "goal", default: "", null: false
+    t.string "participants", default: "", null: false
     t.string "looking_for", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -77,6 +81,18 @@ ActiveRecord::Schema.define(version: 2020_05_01_194019) do
     t.string "target_location", default: "", null: false
     t.string "organization_status", default: "", null: false
     t.string "ein"
+  end
+
+  create_table "projects_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+  end
+
+  create_table "showcases", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_showcases_on_project_id"
   end
 
   create_table "taggings", id: :serial, force: :cascade do |t|
@@ -127,6 +143,7 @@ ActiveRecord::Schema.define(version: 2020_05_01_194019) do
     t.string "level_of_availability"
     t.boolean "pair_with_projects", default: false
     t.boolean "deactivated", default: false, null: false
+    t.boolean "investor"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -146,6 +163,6 @@ ActiveRecord::Schema.define(version: 2020_05_01_194019) do
     t.string "note", default: "", null: false
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "taggings", "tags"
+  add_foreign_key "projects", "users"
+  add_foreign_key "showcases", "projects"
 end
