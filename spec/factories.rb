@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
+  factory :showcase do
+    project { "" }
+    user { nil }
+  end
+
+  factory :investor_project do
+    project { nil }
+    investor { nil }
+  end
+
   factory :investor do
     
   end
